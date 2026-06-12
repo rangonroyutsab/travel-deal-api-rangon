@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from  flask import jsonify
+from flask import jsonify
 
 from database.db import db
 from database.models import Deal
@@ -18,43 +18,43 @@ class DealService:
 
         if errors:
             return jsonify(
-                {
-                    "success": False,
-                    "message": "Validation failed",
-                    "errors": errors
-                }
+                {"success": False, "message": "Validation failed", "errors": errors}
             ), HTTPStatus.BAD_REQUEST
 
         deal = Deal(
             destination=data["destination"],
             price=data["price"],
-            platform=data['platform'],
+            platform=data["platform"],
             rating=data["rating"],
-            travel_type=data["travel_type"]
+            travel_type=data["travel_type"],
         )
 
         db.session.add(deal)
         db.session.commit()
 
-        return jsonify({
-            "success": True,
-            "message": "Deal created successfully",
-            "data": deal.to_dict()
-        }), HTTPStatus.CREATED
+        return jsonify(
+            {
+                "success": True,
+                "message": "Deal created successfully",
+                "data": deal.to_dict(),
+            }
+        ), HTTPStatus.CREATED
 
     @staticmethod
     def get_all():
         """
-        fetch all deals 
+        fetch all deals
         """
 
         deals = Deal.query.all()
 
-        return jsonify({
-            "success": True,
-            "message": "Deals fetched successfully",
-            "data": [deal.to_dict() for deal in deals]
-        }), HTTPStatus.OK
+        return jsonify(
+            {
+                "success": True,
+                "message": "Deals fetched successfully",
+                "data": [deal.to_dict() for deal in deals],
+            }
+        ), HTTPStatus.OK
 
     @staticmethod
     def get_by_id(id):
@@ -65,13 +65,17 @@ class DealService:
         deal = Deal.query.get(id)
 
         if not deal:
-            return jsonify({
-                "success": False,
-                "Message": "Deal not found",
-            }), HTTPStatus.NOT_FOUND
-        
-        return jsonify({
-            "success": True,
-            "message": "Deal fetched successfully",
-            "data": deal.to_dict()
-        }), HTTPStatus.OK
+            return jsonify(
+                {
+                    "success": False,
+                    "Message": "Deal not found",
+                }
+            ), HTTPStatus.NOT_FOUND
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Deal fetched successfully",
+                "data": deal.to_dict(),
+            }
+        ), HTTPStatus.OK

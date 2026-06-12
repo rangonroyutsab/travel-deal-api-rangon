@@ -31,9 +31,11 @@ def validate_input_data(data):
         errors["rating"] = "Rating must be a number between 1 and 5"
 
     if data["travel_type"] not in allowed_travel_types:
-        errors["travel_type"] = "Travel type must be Budget, Luxury, Adventure, or Family"
+        errors["travel_type"] = (
+            "Travel type must be Budget, Luxury, Adventure, or Family"
+        )
 
     if not str(data["platform"]).strip():
         errors["platform"] = "Platform cannot be empty"
-    
+
     return errors

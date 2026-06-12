@@ -4,6 +4,7 @@ from config import Config
 from database.db import db
 from routes.deal_routes import deal_bp
 
+
 def create_app():
     """
     Application Factory
@@ -31,12 +32,8 @@ def create_app():
         check if the server is running
         """
 
-        return (
-            {
-                "message": "Travel Deals API in running!"
-            }
-        )
-    
+        return {"message": "Travel Deals API in running!"}
+
     return app
 
 
