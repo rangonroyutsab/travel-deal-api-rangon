@@ -41,7 +41,20 @@
 			"name": "Fetch All Deals",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/deals",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"deals"
+					]
+				}
 			},
 			"response": []
 		},
@@ -52,7 +65,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"destination\": \"Dubai\",\n    \"price\": 5000,\n    \"platform\": \"Booking\",\n    \"rating\": 4.5,\n    \"travel_type\": \"Luxury\"\n}",
+					"raw": "{\n  \"destination\": \"Bandarban\",\n  \"price\": 3500,\n  \"platform\": \"ShareTrip\",\n  \"rating\": 4.7,\n  \"travel_type\": \"Adventure\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,9 +90,30 @@
 		},
 		{
 			"name": "Fetch Deal by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"destination\": \"Dubai\",\n    \"price\": 5000,\n    \"platform\": \"Booking\",\n    \"rating\": 4.5,\n    \"travel_type\": \"Luxury\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/deals/3",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"deals",
+						"3"
+					]
+				}
 			},
 			"response": []
 		}
