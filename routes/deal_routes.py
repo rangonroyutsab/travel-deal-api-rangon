@@ -1,3 +1,5 @@
+import logging
+
 from flask import Blueprint
 from flask import request
 
@@ -18,6 +20,7 @@ def create_deal():
     """
 
     data = request.get_json()
+    logging.info("Create deal request received")
 
     response = DealService.create_deal(data)
 
@@ -32,7 +35,73 @@ def get_all_deals():
     GET /deals
     """
 
+    logging.info("Get all deals request received")
+
     response = DealService.get_all()
+
+    return response
+
+
+@deal_bp.route("/search", methods=["GET"])
+def search_deals():
+    """
+    search deals by query parameters
+
+    GET /deals/search
+    """
+
+    logging.info("Search deals request received")
+
+    # get the query parameters from the request
+    data = request.args
+    response = DealService.search_deals(data)
+
+    return response
+
+
+@deal_bp.route("/filter", methods=["GET"])
+def filter_deals():
+    """
+    filter deals by budget
+
+    GET /deals/filter
+    """
+
+    logging.info("Filter deals request received")
+
+    data = request.args
+    response = DealService.filter_deals(data)
+
+    return response
+
+
+@deal_bp.route("/sort", methods=["GET"])
+def sort_deals():
+    """
+    sort deals by query parameters
+
+    GET /deals/sort
+    """
+
+    logging.info("Sort deals request received")
+
+    data = request.args
+    response = DealService.sort_deals(data)
+
+    return response
+
+
+@deal_bp.route("/recent", methods=["GET"])
+def get_recent_deals():
+    """
+    fetch recently viewed deals
+
+    GET /deals/recent
+    """
+
+    logging.info("Get recently viewed deals request received")
+
+    response = DealService.get_recent_deals()
 
     return response
 
@@ -44,6 +113,8 @@ def get_deal_by_id(deal_id):
 
     GET /deals/{deal_id}
     """
+
+    logging.info("Get deal by id request received: %s", deal_id)
 
     response = DealService.get_by_id(deal_id)
 

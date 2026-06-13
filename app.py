@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from config import Config
 
@@ -16,6 +18,16 @@ def create_app():
     # Load Config
     app.config.from_object(Config)
 
+    # Logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format=(
+            "%(asctime)s - "
+            "%(levelname)s - "
+            "%(message)s"
+        ),
+    )
+
     # Initialize the Database
     db.init_app(app)
 
@@ -31,6 +43,8 @@ def create_app():
         """
         check if the server is running
         """
+
+        logging.info("Health check request successful")
 
         return {"message": "Travel Deals API in running!"}
 
