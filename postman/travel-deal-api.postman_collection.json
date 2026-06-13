@@ -1,121 +1,235 @@
 {
-	"info": {
-		"_postman_id": "b1d214b3-079e-48fc-a145-f646ce63f3ba",
-		"name": "travel-deal-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "54943899",
-		"_collection_link": "https://rangonroyutsab-9244903.postman.co/workspace/w3-intern-work~8314d967-ac15-474a-8295-d7582b0fb36a/collection/54943899-b1d214b3-079e-48fc-a145-f646ce63f3ba?action=share&source=collection_link&creator=54943899"
-	},
-	"item": [
-		{
-			"name": "Health",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:5000",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000"
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Fetch All Deals",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "127.0.0.1:5000/deals",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"deals"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add New Deal",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"destination\": \"Bandarban\",\n  \"price\": 3500,\n  \"platform\": \"ShareTrip\",\n  \"rating\": 4.7,\n  \"travel_type\": \"Adventure\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "127.0.0.1:5000/deals",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"deals"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Fetch Deal by ID",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"destination\": \"Dubai\",\n    \"price\": 5000,\n    \"platform\": \"Booking\",\n    \"rating\": 4.5,\n    \"travel_type\": \"Luxury\"\n}"
-				},
-				"url": {
-					"raw": "127.0.0.1:5000/deals/3",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"deals",
-						"3"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "b1d214b3-079e-48fc-a145-f646ce63f3ba",
+    "name": "travel-deal-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54943899",
+    "_collection_link": "https://go.postman.co/collection/54943899-b1d214b3-079e-48fc-a145-f646ce63f3ba?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "127.0.0.1:5000",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch All Deals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add New Deal",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"destination\": \"Sylhet\",\n  \"price\": 4200,\n  \"platform\": \"Booking\",\n  \"rating\": 4.1,\n  \"travel_type\": \"Family\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "127.0.0.1:5000/deals",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch Deal by ID",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"destination\": \"Dubai\",\n    \"price\": 5000,\n    \"platform\": \"Booking\",\n    \"rating\": 4.5,\n    \"travel_type\": \"Luxury\"\n}"
+        },
+        "url": {
+          "raw": "127.0.0.1:5000/deals/3",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "View Recently Viewed Deals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/recent",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "recent"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search By Partial Name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/search?destination=ban",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "destination",
+              "value": "ban"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sort by Price Descending",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/sort?sort_by=price&order=desc",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "sort"
+          ],
+          "query": [
+            {
+              "key": "sort_by",
+              "value": "price"
+            },
+            {
+              "key": "order",
+              "value": "desc"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Deals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/filter?min_price=4000&max_price=6000",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "filter"
+          ],
+          "query": [
+            {
+              "key": "min_price",
+              "value": "4000"
+            },
+            {
+              "key": "max_price",
+              "value": "6000"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }
