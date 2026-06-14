@@ -1,6 +1,6 @@
 # Travel Deal Management System using Flask
 
-A simple Flask REST API for managing travel deals. This project allows users to create travel deals, view all deals, view a single deal by ID, search deals, filter deals by budget, sort deals, and view recently accessed deals.
+A simple Flask REST API for managing travel deals. This project allows users to create, update, delete, view, search, filter, sort, and track travel deals.
 
 The project is built using **Python**, **Flask**, **Flask-SQLAlchemy**, and **SQLite**.
 
@@ -9,12 +9,16 @@ The project is built using **Python**, **Flask**, **Flask-SQLAlchemy**, and **SQ
 ## Features
 
 * Create a new travel deal
+* Update an existing travel deal
+* Delete a travel deal
 * View all travel deals
 * View a single travel deal by ID
 * Search travel deals by destination, platform, or travel type
 * Filter travel deals by minimum and maximum price
 * Sort travel deals by supported fields
 * View recently accessed deals
+* View popular deals by successful view count
+* View basic in-memory API usage statistics
 * Input validation
 * Query parameter validation
 * Partial and case-insensitive searching
@@ -114,7 +118,11 @@ http://127.0.0.1:5000
 | GET    | `/deals/filter`    | Filter travel deals by budget                        | No                    | `min_price`, `max_price`                 | `200 OK`       |
 | GET    | `/deals/sort`      | Sort travel deals                                    | No                    | `sort_by`, `order`                       | `200 OK`       |
 | GET    | `/deals/recent`    | Get recently viewed deals                            | No                    | No                                       | `200 OK`       |
+| GET    | `/deals/popular`   | Get popular deals by view count                      | No                    | No                                       | `200 OK`       |
 | GET    | `/deals/<deal_id>` | Get a single travel deal by ID                       | No                    | No                                       | `200 OK`       |
+| PUT    | `/deals/<deal_id>` | Update a travel deal by ID                           | Yes                   | No                                       | `200 OK`       |
+| DELETE | `/deals/<deal_id>` | Delete a travel deal by ID                           | No                    | No                                       | `200 OK`       |
+| GET    | `/stats`           | Get basic in-memory API usage statistics             | No                    | No                                       | `200 OK`       |
 
 
 ---
@@ -172,6 +180,60 @@ GET /deals/<deal_id>
 
 The recent list is stored in memory and keeps the latest 5 viewed deals. It resets when the server restarts.
 
+### Popular Deals
+
+```http
+GET /deals/popular
+```
+
+Popular deals are tracked when a deal is successfully fetched using:
+
+```http
+GET /deals/<deal_id>
+```
+
+Each popular deal includes a `view_count`. The popular list is stored in memory and resets when the server restarts.
+
+### Update a Deal
+
+```http
+PUT /deals/1
+```
+
+```json
+{
+  "destination": "Cox's Bazar",
+  "price": 5200,
+  "platform": "Booking",
+  "rating": 4.4,
+  "travel_type": "Family"
+}
+```
+
+Update requests require the full deal body and use the same validation rules as deal creation.
+
+### Delete a Deal
+
+```http
+DELETE /deals/1
+```
+
+Deleted deals are removed from recently viewed and popular in-memory tracking.
+
+### API Stats
+
+```http
+GET /stats
+```
+
+The stats response includes basic request counters:
+
+```txt
+total_requests, successful_requests, failed_requests
+```
+
+Request counters are stored in memory and reset when the server restarts.
+
 
 ---
 
@@ -184,6 +246,8 @@ The recent list is stored in memory and keeps the latest 5 viewed deals. It rese
 | `platform`    | Required and cannot be empty                              |
 | `rating`      | Required and must be between 1 and 5                      |
 | `travel_type` | Must be one of: `Budget`, `Luxury`, `Adventure`, `Family` |
+
+These rules apply to both `POST /deals/` and full-body `PUT /deals/<deal_id>` requests.
 
 
 ### Query Parameter Validation
@@ -261,5 +325,6 @@ Import this file into Postman to test the API endpoints.
 ├── services
 │   ├── deal_service.py
 └── utils
+    ├── stats.py
     └── validators.py
 ```
