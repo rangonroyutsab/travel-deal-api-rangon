@@ -118,6 +118,59 @@
       "response": []
     },
     {
+      "name": "Update Deal by ID",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"destination\": \"Cox's Bazar\",\n  \"price\": 5200,\n  \"platform\": \"Booking\",\n  \"rating\": 4.4,\n  \"travel_type\": \"Family\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "127.0.0.1:5000/deals/3",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Deal by ID",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/3",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "View Recently Viewed Deals",
       "request": {
         "method": "GET",
@@ -134,6 +187,28 @@
           "path": [
             "deals",
             "recent"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "View Popular Deals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/deals/popular",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "deals",
+            "popular"
           ]
         }
       },
@@ -226,6 +301,27 @@
               "key": "max_price",
               "value": "6000"
             }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "API Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "127.0.0.1:5000/stats",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "5000",
+          "path": [
+            "stats"
           ]
         }
       },
