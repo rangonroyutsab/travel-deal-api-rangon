@@ -19,7 +19,7 @@ def create_deal():
     POST /deals
     """
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
     logging.info("Create deal request received")
 
     response = DealService.create_deal(data)
@@ -106,6 +106,21 @@ def get_recent_deals():
     return response
 
 
+@deal_bp.route("/popular", methods=["GET"])
+def get_popular_deals():
+    """
+    fetch popular deals by view count
+
+    GET /deals/popular
+    """
+
+    logging.info("Get popular deals request received")
+
+    response = DealService.get_popular_deals()
+
+    return response
+
+
 @deal_bp.route("/<int:deal_id>", methods=["GET"])
 def get_deal_by_id(deal_id):
     """
@@ -117,5 +132,36 @@ def get_deal_by_id(deal_id):
     logging.info("Get deal by id request received: %s", deal_id)
 
     response = DealService.get_by_id(deal_id)
+
+    return response
+
+
+@deal_bp.route("/<int:deal_id>", methods=["PUT"])
+def update_deal(deal_id):
+    """
+    update a deal by its id
+
+    PUT /deals/{deal_id}
+    """
+
+    data = request.get_json(silent=True)
+    logging.info("Update deal request received: %s", deal_id)
+
+    response = DealService.update_deal(deal_id, data)
+
+    return response
+
+
+@deal_bp.route("/<int:deal_id>", methods=["DELETE"])
+def delete_deal(deal_id):
+    """
+    delete a deal by its id
+
+    DELETE /deals/{deal_id}
+    """
+
+    logging.info("Delete deal request received: %s", deal_id)
+
+    response = DealService.delete_deal(deal_id)
 
     return response

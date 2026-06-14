@@ -6,6 +6,7 @@ from sqlalchemy import select
 
 from database.db import db
 from database.models import Deal
+from utils.stats import ApiStats
 from utils.validators import (
     is_empty,
     validate_filter_query,
@@ -134,6 +135,26 @@ class DealService:
         DealService.recently_viewed_deals = DealService.recently_viewed_deals[:5]
 
     @staticmethod
+    def _track_deal_view(deal_id):
+        """
+        Track a successful deal view.
+        """
+
+        DealService._track_recent_deal(deal_id)
+        ApiStats.record_deal_view(deal_id)
+
+    @staticmethod
+    def _remove_tracked_deal(deal_id):
+        """
+        Remove deleted deals from in-memory tracking.
+        """
+
+        if deal_id in DealService.recently_viewed_deals:
+            DealService.recently_viewed_deals.remove(deal_id)
+
+        ApiStats.remove_deal(deal_id)
+
+    @staticmethod
     def create_deal(data):
         """
         Creates a new deal and stores it into the database
@@ -174,6 +195,93 @@ class DealService:
                 "data": deal.to_dict(),
             }
         ), HTTPStatus.CREATED
+
+    @staticmethod
+    def update_deal(deal_id, data):
+        """
+        Update an existing deal.
+        """
+
+        errors = validate_input_data(data)
+
+        if errors:
+            logging.warning("Deal update validation failed: %s", errors)
+            return jsonify(
+                {"success": False, "message": "Validation failed", "errors": errors}
+            ), HTTPStatus.BAD_REQUEST
+
+        try:
+            deal = db.session.get(Deal, deal_id)
+        except Exception as error:
+            logging.error("Failed to fetch deal with id %s: %s", deal_id, error)
+            return jsonify(
+                {"success": False, "message": "Failed to update deal"}
+            ), HTTPStatus.INTERNAL_SERVER_ERROR
+
+        if not deal:
+            logging.warning("Deal not found with id: %s", deal_id)
+            return jsonify(
+                {"success": False, "message": "Deal not found"}
+            ), HTTPStatus.NOT_FOUND
+
+        try:
+            deal.destination = data["destination"]
+            deal.price = data["price"]
+            deal.platform = data["platform"]
+            deal.rating = data["rating"]
+            deal.travel_type = data["travel_type"]
+
+            db.session.commit()
+        except Exception as error:
+            db.session.rollback()
+            logging.error("Failed to update deal with id %s: %s", deal_id, error)
+            return jsonify(
+                {"success": False, "message": "Failed to update deal"}
+            ), HTTPStatus.INTERNAL_SERVER_ERROR
+
+        logging.info("Deal updated successfully with id: %s", deal_id)
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Deal updated successfully",
+                "data": deal.to_dict(),
+            }
+        ), HTTPStatus.OK
+
+    @staticmethod
+    def delete_deal(deal_id):
+        """
+        Delete an existing deal.
+        """
+
+        try:
+            deal = db.session.get(Deal, deal_id)
+
+            if not deal:
+                logging.warning("Deal not found with id: %s", deal_id)
+                return jsonify(
+                    {"success": False, "message": "Deal not found"}
+                ), HTTPStatus.NOT_FOUND
+
+            db.session.delete(deal)
+            db.session.commit()
+        except Exception as error:
+            db.session.rollback()
+            logging.error("Failed to delete deal with id %s: %s", deal_id, error)
+            return jsonify(
+                {"success": False, "message": "Failed to delete deal"}
+            ), HTTPStatus.INTERNAL_SERVER_ERROR
+
+        DealService._remove_tracked_deal(deal_id)
+        logging.info("Deal deleted successfully with id: %s", deal_id)
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Deal deleted successfully",
+            }
+        ), HTTPStatus.OK
 
     @staticmethod
     def get_all():
@@ -332,6 +440,65 @@ class DealService:
         )
 
     @staticmethod
+    def get_popular_deals():
+        """
+        Fetch viewed deals ordered by view count.
+        """
+
+        view_counts = ApiStats.get_deal_view_counts()
+
+        if not view_counts:
+            logging.info("No popular deals found")
+            return jsonify(
+                {
+                    "success": True,
+                    "message": "No popular deals found",
+                    "data": [],
+                }
+            ), HTTPStatus.OK
+
+        try:
+            statement = select(Deal).where(Deal.id.in_(list(view_counts.keys())))
+            deals = DealService._execute_deal_statement(statement)
+        except Exception as error:
+            logging.error("Failed to fetch popular deals: %s", error)
+            return jsonify(
+                {"success": False, "message": "Failed to fetch popular deals"}
+            ), HTTPStatus.INTERNAL_SERVER_ERROR
+
+        deals_by_id = {deal.id: deal for deal in deals}
+        sorted_view_counts = sorted(
+            view_counts.items(),
+            key=lambda view_count: view_count[1],
+            reverse=True,
+        )
+        popular_deals = []
+
+        for deal_id, view_count in sorted_view_counts:
+            deal = deals_by_id.get(deal_id)
+
+            if not deal:
+                ApiStats.remove_deal(deal_id)
+                continue
+
+            deal_data = deal.to_dict()
+            deal_data["view_count"] = view_count
+            popular_deals.append(deal_data)
+
+        logging.info(
+            "Popular deals fetched successfully. Total deals: %s",
+            len(popular_deals),
+        )
+
+        return jsonify(
+            {
+                "success": True,
+                "message": "Popular deals fetched successfully",
+                "data": popular_deals,
+            }
+        ), HTTPStatus.OK
+
+    @staticmethod
     def get_by_id(id):
         """
         fetch deal with a specific id
@@ -355,7 +522,7 @@ class DealService:
             ), HTTPStatus.NOT_FOUND
 
         logging.info("Deal fetched successfully with id: %s", id)
-        DealService._track_recent_deal(id)
+        DealService._track_deal_view(id)
 
         return jsonify(
             {

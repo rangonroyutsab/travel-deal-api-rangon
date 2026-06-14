@@ -32,6 +32,10 @@ def validate_input_data(data):
 
     errors = {}
 
+    if not isinstance(data, dict):
+        errors["body"] = "Request body must be valid JSON"
+        return errors
+
     required_fields = ["destination", "price", "platform", "rating", "travel_type"]
 
     for field in required_fields:
